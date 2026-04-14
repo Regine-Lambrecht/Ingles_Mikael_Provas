@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>English Quest - 6</title>
+    <title>English Quest - Progress Tracker</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&display=swap" rel="stylesheet">
     <style>
@@ -60,6 +60,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // --- 1. DATA AND STATE ---
+            const APP_KEY = 'english_quest_progress_v6'; 
             const ICONS = {
                 eye: `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>`,
                 eyeOff: `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a10.014 10.014 0 012.183-3.883m3.66-3.66A10.001 10.001 0 0112 5c4.478 0 8.268 2.943 9.542 7a10.059 10.059 0 01-4.125 4.875M3 3l18 18M9.88 9.88a3 3 0 104.24 4.24" /></svg>`,
@@ -182,7 +183,8 @@
             const backBtn = document.getElementById('back-btn');
 
             let globalOnlyAsterisk = (localStorage.getItem('english_quest_only_star') === null) ? true : localStorage.getItem('english_quest_only_star') === 'true';
-            let userProgress = JSON.parse(localStorage.getItem('english_quest_progress')) || {};
+            
+            let userProgress = JSON.parse(localStorage.getItem(APP_KEY)) || {};
 
             let currentScreen = 'home';
             let currentProva = null, currentTheme = null, currentLevel = null;
@@ -230,6 +232,19 @@
             }
 
             // --- 4. MASTERY & PROGRESS ---
+            function saveProgress(prova, theme, level) {
+                const pk = `${prova}_${theme}`;
+                if (!userProgress[pk]) userProgress[pk] = [];
+                
+                for (let i = 1; i <= level; i++) {
+                    if (!userProgress[pk].includes(i)) {
+                        userProgress[pk].push(i);
+                    }
+                }
+                
+                localStorage.setItem(APP_KEY, JSON.stringify(userProgress));
+            }
+
             function checkP3MainCompletion() {
                 const themes = PROVAS_DATA["P3"].themes;
                 for (const tKey in themes) {
@@ -323,7 +338,6 @@
                 container.innerHTML = ''; screenTitle.innerText = `Temas de ${currentProva}`;
                 container.appendChild(createToggleUI(!globalOnlyAsterisk, () => { globalOnlyAsterisk = !globalOnlyAsterisk; localStorage.setItem('english_quest_only_star', globalOnlyAsterisk); renderThemes(); }));
                 
-                // --- SORT LOGIC: Stars first ---
                 const themeKeys = [...PROVAS_DATA[currentProva].order];
                 themeKeys.sort((a, b) => {
                     const hasStarA = PROVAS_DATA[currentProva].themes[a].some(i => i.en.startsWith('*'));
@@ -339,9 +353,18 @@
                     const dName = (hasStar && !key.startsWith('⭐')) ? `⭐ ${key}` : key;
                     const count = globalOnlyAsterisk ? list.filter(i => i.en.startsWith('*')).length : list.length;
                     if (globalOnlyAsterisk && count === 0) return;
+
+                    // UI Sync - Display highest level reached
+                    const pk = `${currentProva}_${key}`;
+                    const doneLevels = userProgress[pk] || [];
+                    const highest = doneLevels.length > 0 ? Math.max(...doneLevels) : 0;
+                    
+                    // Specific requested format: "Nível # alcançado"
+                    const progressLabel = `Nível ${highest} alcançado`;
+
                     const tc = document.createElement('div'); tc.className = "card p-2.5 flex justify-between items-center border-b-4 border-yellow-200 mb-1.5 active:scale-95";
                     tc.onclick = () => { currentTheme = key; setScreen('levels'); };
-                    tc.innerHTML = `<div class="flex flex-col"><span class="text-base font-bold">${dName}</span><span class="text-[10px] opacity-60">${(userProgress[`${currentProva}_${key}`] || []).length} feitos</span></div>`;
+                    tc.innerHTML = `<div class="flex flex-col"><span class="text-base font-bold">${dName}</span><span class="text-[10px] opacity-60">${progressLabel}</span></div>`;
                     const rb = document.createElement('button'); rb.className = "text-[9px] font-bold text-blue-600 bg-blue-50 py-0.5 px-1.5 rounded-md border border-blue-100";
                     rb.innerText = `📖 ${count}`; rb.onclick = (e) => { e.stopPropagation(); currentTheme = key; setScreen('vocabulary'); };
                     tc.appendChild(rb); container.appendChild(tc);
@@ -466,17 +489,12 @@
             function handleTyping(e) {
                 const isS = currentTheme.includes("Sentences") || currentTheme.includes("Continuous");
                 if (finishedCurrentQuestion || isHintLocked || isS) return;
-                
                 const v = e.target.value.toLowerCase();
                 if (v.length === 0) return;
-                
-                // Get the newly typed character and immediately reset the input buffer
                 const typedChar = v[v.length - 1];
                 e.target.value = ''; 
-                
                 const tTxt = questionList[currentIndex].en.replace(/^\*/,'').toLowerCase();
                 const req = tTxt[anagramProgress.length];
-                
                 if (typedChar === req) {
                     anagramProgress.push(typedChar); 
                     wrongAttemptsPerPos = 0; 
@@ -575,7 +593,22 @@
                 }
                 if (showNextButton) {
                     const nb = document.createElement('button'); nb.className="w-full bg-blue-600 text-white p-3 rounded-lg text-xl font-bold mt-2 animate-pulse";
-                    nb.innerText="Próximo →"; nb.onclick = () => { showNextButton = false; currentIndex++; if(currentIndex>=questionList.length){ if(redoList.length>0){ questionList=[...redoList]; redoList=[]; currentIndex=0; shuffle(questionList); playQuestion();} else { const pk = `${currentProva}_${currentTheme}`; if(!userProgress[pk]) userProgress[pk]=[]; if(!userProgress[pk].includes(currentLevel)) {userProgress[pk].push(currentLevel); localStorage.setItem('english_quest_progress', JSON.stringify(userProgress));} setScreen('finish');} } else playQuestion(); };
+                    nb.innerText="Próximo →"; nb.onclick = () => { 
+                        showNextButton = false; 
+                        currentIndex++; 
+                        if(currentIndex >= questionList.length){ 
+                            if(redoList.length > 0){ 
+                                questionList = [...redoList]; 
+                                redoList = []; 
+                                currentIndex = 0; 
+                                shuffle(questionList); 
+                                playQuestion();
+                            } else { 
+                                saveProgress(currentProva, currentTheme, currentLevel);
+                                setScreen('finish');
+                            } 
+                        } else playQuestion(); 
+                    };
                     container.appendChild(nb);
                 }
             }
