@@ -466,11 +466,31 @@
             function handleTyping(e) {
                 const isS = currentTheme.includes("Sentences") || currentTheme.includes("Continuous");
                 if (finishedCurrentQuestion || isHintLocked || isS) return;
-                const v = e.target.value.toLowerCase(), tTxt = questionList[currentIndex].en.replace(/^\*/,'').toLowerCase();
-                if (v.length > anagramProgress.length) {
-                    const typed = v[v.length-1], req = tTxt[anagramProgress.length];
-                    if (typed === req) { anagramProgress.push(typed); wrongAttemptsPerPos = 0; if(anagramProgress.length === tTxt.length) checkPuzzleComplete(); render(); }
-                    else { wrongAttemptsPerPos++; if (wrongAttemptsPerPos >= 2) { forcedIndices.push(anagramProgress.length); anagramProgress.push(req); wrongAttemptsPerPos = 0; if(anagramProgress.length === tTxt.length) checkPuzzleComplete(); render(); } else triggerErrorFlash(); }
+                
+                const v = e.target.value.toLowerCase();
+                if (v.length === 0) return;
+                
+                // Get the newly typed character and immediately reset the input buffer
+                const typedChar = v[v.length - 1];
+                e.target.value = ''; 
+                
+                const tTxt = questionList[currentIndex].en.replace(/^\*/,'').toLowerCase();
+                const req = tTxt[anagramProgress.length];
+                
+                if (typedChar === req) {
+                    anagramProgress.push(typedChar); 
+                    wrongAttemptsPerPos = 0; 
+                    if(anagramProgress.length === tTxt.length) checkPuzzleComplete(); 
+                    render(); 
+                } else { 
+                    wrongAttemptsPerPos++; 
+                    if (wrongAttemptsPerPos >= 2) { 
+                        forcedIndices.push(anagramProgress.length); 
+                        anagramProgress.push(req); 
+                        wrongAttemptsPerPos = 0; 
+                        if(anagramProgress.length === tTxt.length) checkPuzzleComplete(); 
+                        render(); 
+                    } else triggerErrorFlash(); 
                 }
             }
 
@@ -526,8 +546,16 @@
                         });
                         container.appendChild(lg);
                     } else {
-                        const inp = document.createElement('input'); inp.id='hidden-typing-input'; inp.type="text"; inp.style.position="absolute"; inp.style.opacity="0"; 
-                        inp.oninput = handleTyping; container.appendChild(inp); setTimeout(()=>inp.focus(),100);
+                        const inp = document.createElement('input'); 
+                        inp.id='hidden-typing-input'; 
+                        inp.type="text"; 
+                        inp.style.position="absolute"; 
+                        inp.style.opacity="0"; 
+                        inp.autocomplete = "off";
+                        inp.autocorrect = "off";
+                        inp.oninput = handleTyping; 
+                        container.appendChild(inp); 
+                        setTimeout(()=>inp.focus(),100);
                     }
                     const hR = document.createElement('div'); hR.className = "flex gap-2 w-full mt-2";
                     const hb = document.createElement('button'); hb.className="flex-1 bg-blue-50 p-2 rounded-lg font-bold text-[10px]"; hb.innerText="🔊 OUVIR"; hb.onclick=()=> { isHintLocked=true; speak(cur.en, 'en-US', ()=> {isHintLocked=false; render();}); };
