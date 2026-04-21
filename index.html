@@ -82,8 +82,7 @@
     </div>
 
     <script>
-        // --- 1. DATA (UPDATED FOR 6º ANO) ---
-        // Renamed P1 -> P3 and P2 -> P4
+        // --- 1. DATA (6º ANO) ---
         const PROVAS_DATA = {
             "P3": {
                 order: ["Family", "Adjectives", "Location", "Verbs", "Body", "Other", "Sentences"],
@@ -126,13 +125,13 @@
                 id: "pr1", 
                 label: "Rei da Prova 1", 
                 icon: `<svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55.45 1 1 1h2c.55 0 1-.45 1-1v-2.34"/><path d="M18 4H6v7a6 6 0 0 0 12 0V4Z"/><text x="10.5" y="11" fill="#d4af37" font-size="7" font-family="Arial" font-weight="bold" stroke-width="0">1</text></svg>`, 
-                challenge: "Termine todos os níveis da Prova 1" 
+                challenge: "Termine todos os níveis da Prova 3" 
             },
             { 
                 id: "pr2", 
                 label: "Rei da Prova 2", 
                 icon: `<svg viewBox="0 0 24 24" fill="none" stroke="#3182ce" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55.45 1 1 1h2c.55 0 1-.45 1-1v-2.34"/><path d="M18 4H6v7a6 6 0 0 0 12 0V4Z"/><text x="10.5" y="11" fill="#3182ce" font-size="7" font-family="Arial" font-weight="bold" stroke-width="0">2</text></svg>`, 
-                challenge: "Termine todos os níveis da Prova 2" 
+                challenge: "Termine todos os níveis da Prova 4" 
             }
         ];
 
@@ -198,7 +197,9 @@
             if (!text) return;
             const u = new SpeechSynthesisUtterance(String(text).replace(/^\*/, ''));
             if (lang.startsWith('pt') && ptVoice) u.voice = ptVoice;
-            u.lang = lang; u.rate = 0.85;
+            u.lang = lang; 
+            // PT voice speed set to 1.20 for natural quickness (as requested)
+            u.rate = lang.startsWith('pt') ? 1.20 : 0.85; 
             if (onEnd) u.onend = onEnd;
             window.speechSynthesis.speak(u);
         }
@@ -565,10 +566,9 @@
             ha.append(bb, counterDiv, cb);
             container.appendChild(ha);
 
-            // Using P3 and P4 display names
+            // Provas P3 and P4
             Object.keys(PROVAS_DATA).forEach(p => {
                 const isP4 = (p === "P4"), isDone = !isP4 || checkP3MainCompletion();
-                const displayTitle = p.replace("P3", "P3").replace("P4", "P4"); 
                 const b = document.createElement('button'); b.className = `card p-4 text-xl font-bold mb-2 ${!isDone ? 'locked bg-gray-100' : 'bg-white border-b-4 border-blue-200'}`;
                 b.innerText = formatText("Prova " + p);
                 b.onclick = () => { 
@@ -629,7 +629,7 @@
             container.innerHTML = ''; screenTitle.innerText = formatText(`Temas de ${state.prova}`);
             container.appendChild(createToggleUI(!state.onlyStar, () => { state.onlyStar = !state.onlyStar; localStorage.setItem('eq_star', state.onlyStar); renderThemes(); }));
             
-            // Reordering logic: Themes with star items first when "Todos" is active
+            // Themes with main terms first
             const currentOrder = PROVAS_DATA[state.prova].order;
             const sortedOrder = [...currentOrder].sort((a, b) => {
                 const hasStarA = PROVAS_DATA[state.prova].themes[a].some(i => i.en.startsWith('*'));
@@ -670,7 +670,8 @@
                 return b;
             };
             hr.append(btnH('en', "INGLÊS"), btnH('pt', "PORTUGUÊS")); container.appendChild(hr);
-            const table = document.createElement('table'); table.className = "vocab-table w-full";
+            const table = document.className = "vocab-table w-full";
+            const tableElement = document.createElement('table'); tableElement.className = "vocab-table w-full";
             const tbody = document.createElement('tbody');
             ws.forEach((w, i) => {
                 const row = document.createElement('tr'); if (w.en.startsWith('*')) row.className = 'key-term';
@@ -696,7 +697,7 @@
                 }
                 tdP.appendChild(divP); row.append(tdE, tdP); tbody.appendChild(row);
             });
-            table.appendChild(tbody); container.appendChild(table);
+            tableElement.appendChild(tbody); container.appendChild(tableElement);
             const bb = document.createElement('button'); bb.className = "w-full bg-blue-600 text-white p-3 rounded-lg font-bold mt-2 shadow-lg";
             bb.innerText = formatText("Voltar"); bb.onclick = () => setScreen('themes'); container.appendChild(bb);
         }
