@@ -83,8 +83,9 @@
 
     <script>
         // --- 1. DATA (6º ANO) ---
+        // Renamed P3 -> P2 and P4 -> P3
         const PROVAS_DATA = {
-            "P3": {
+            "P2": {
                 order: ["Family", "Adjectives", "Location", "Verbs", "Body", "Other", "Sentences"],
                 themes: {
                     "Family": [{en:"Boy",pt:"Menino"},{en:"*Brother",pt:"Irmão"},{en:"*Sister",pt:"Irmã"},{en:"Twins",pt:"Gêmeos"},{en:"Triplets",pt:"Trigêmeos"},{en:"Quadruplets",pt:"Quadrigêmeos"},{en:"Baby",pt:"Bebê"},{en:"*Grandparent",pt:"Avô/Avó"},{en:"*Son",pt:"Filho"},{en:"*Nephew",pt:"Sobrinho"},{en:"*Cousin",pt:"Primo/Prima"},{en:"*Uncle",pt:"Tio"},{en:"*Aunt",pt:"Tia"},{en:"*Dad",pt:"Papai"},{en:"*Mum",pt:"Mamãe"},{en:"*Husband",pt:"Marido"},{en:"*Wife",pt:"Esposa"},{en:"*Daughter",pt:"Filha"},{en:"*Niece",pt:"Sobrinha"},{en:"*Grandpa",pt:"Vovô"},{en:"*Grandma",pt:"Vovó"},{en:"*Grandson",pt:"Neto"},{en:"*Granddaughter",pt:"Neta"}],
@@ -93,10 +94,10 @@
                     "Verbs": [{en:"Imagine",pt:"Imaginar"},{en:"Find",pt:"Encontrar"},{en:"Circle",pt:"Circular"},{en:"Look",pt:"Olhar"},{en:"Meet",pt:"Encontrar/Conhecer"},{en:"Speak",pt:"Falar"},{en:"Paint",pt:"Pintar"},{en:"Watch",pt:"Assistir"},{en:"Dance",pt:"Dançar"},{en:"Play",pt:"Brincar/Jogar"},{en:"Choose",pt:"Escolher"}],
                     "Body": [{en:"*Hair",pt:"Cabelo"},{en:"Eye",pt:"Olho"},{en:"Freckle",pt:"Sarda"},{en:"Hairstyle",pt:"Penteado"}],
                     "Other": [{en:"Hey",pt:"Ei/Olá"},{en:"Thanks",pt:"Obrigado"},{en:"Friend",pt:"Amigo"},{en:"Cool",pt:"Super/Legal"},{en:"Maybe",pt:"Talvez"},{en:"Bye",pt:"Tchau"},{en:"Fine",pt:"Bem"},{en:"Beginning",pt:"Início"},{en:"End",pt:"Fim"},{en:"Question",pt:"Pergunta"},{en:"Something",pt:"Algo"},{en:"Light",pt:"Luz"},{en:"Perhaps",pt:"Talvez"},{en:"Usually",pt:"Geralmente"},{en:"Activity",pt:"Atividade"},{en:"Now",pt:"Agora"},{en:"Pencil",pt:"Lápis"}],
-                    "Sentences": [{en:"Are you alright?",pt:"Você está bem?"},{en:"How's school?",pt:"Como vai a escola?"},{en:"Do you have any new friends?",pt:"Você tem novos amigos?"},{en:"There is a new boy in my class",pt:"Tem um menino novo na minha classe"},{en:"Gotta go!",pt:"Tenho que ir!"},{en:"How's it going ?",pt:"Como vai?"},{en:"See you later",pt:"Vejo você depois"},{en:"That's so not funny!",pt:"Isso não tem a menor graça!"},{en:"I'm from Brasil",pt:"Eu sou do Brasil"},{en:"You're like me!",pt:"Você é como eu!"},{en:"My sister is ten",pt:"Minha irmã tem dez anos"},{en:"My best friend's name is Toni",pt:"O nome do meu melhor amigo é Toni"},{en:"Here's a photo of me",pt:"Aqui está uma foto minha"},{en:"*Do you have a big family?",pt:"Você tem uma família grande?"},{en:"*Do you have any pets?",pt:"Você tem animais de estimação?"},{en:"Who's your best friend?",pt:"Quem é seu melhor amigo?"},{en:"*How many brothers do you have?",pt:"Quantos irmãos você tem?"},{en:"Who's Javi's best friend?",pt:"Quem é o melhor amigo do Javi?"}]
+                    "Sentences": [{en:"Are you alright?",pt:"Você está bem?"},{en:"How's school?",pt:"Como vai a escola?"},{en:"Do you have any new friends?",pt:"Você tem novos amigos?"},{en:"There is a new boy in my class",pt:"Tem um menino novo na minha classe"},{en:"Gotta go!",pt:"Tenho que ir!"},{en:"How's it going ?",pt:"Como vai?"},{en:"See you later",pt:"Vejo você depois"},{en:"That's so not funny!",pt:"Isso não tem a menor graça!"},{en:"I'm from Brasil",pt:"Eu sou do Brasil"},{en:"You're like me!",pt:"Você é como eu!"},{en:"My sister is ten",pt:"Minha irmã tem dez anos"},{en:"My sister is ten",pt:"Minha irmã tem dez anos"},{en:"My best friend's name is Toni",pt:"O nome do meu melhor amigo é Toni"},{en:"Here's a photo of me",pt:"Aqui está uma foto minha"},{en:"*Do you have a big family?",pt:"Você tem uma família grande?"},{en:"*Do you have any pets?",pt:"Você tem animais de estimação?"},{en:"Who's your best friend?",pt:"Quem é seu melhor amigo?"},{en:"*How many brothers do you have?",pt:"Quantos irmãos você tem?"},{en:"Who's Javi's best friend?",pt:"Quem é o melhor amigo do Javi?"}]
                 }
             },
-            "P4": {
+            "P3": {
                 order: ["Animals", "Clothes", "Sentences Part 2"],
                 themes: {
                     "Animals": [{en:"Pet",pt:"Animal de estimação"},{en:"Rabbit",pt:"Coelho"}],
@@ -107,6 +108,7 @@
         };
 
         // --- 1.1 BADGES DATA ---
+        // Medal pr1: "Rei da Prova 2", pr2: "Rei da Prova 3"
         const BADGES_DATA = [
             { id: "lv1", label: "Explorador de Palavras", icon: "📖", challenge: "Resolva um nível 1 (Ler Inglês)" },
             { id: "lv2", label: "Mestre da Tradução", icon: "🔄", challenge: "Resolva um nível 2 (Traduzir para Inglês)" },
@@ -123,15 +125,15 @@
             { id: "th5", label: "Sábio da Classe", icon: "🎓", challenge: "Resolva todos os níveis em 5 temas" },
             { 
                 id: "pr1", 
-                label: "Rei da Prova 1", 
-                icon: `<svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55.45 1 1 1h2c.55 0 1-.45 1-1v-2.34"/><path d="M18 4H6v7a6 6 0 0 0 12 0V4Z"/><text x="10.5" y="11" fill="#d4af37" font-size="7" font-family="Arial" font-weight="bold" stroke-width="0">1</text></svg>`, 
-                challenge: "Termine todos os níveis da Prova 3" 
+                label: "Rei da Prova 2", 
+                icon: `<svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55.45 1 1 1h2c.55 0 1-.45 1-1v-2.34"/><path d="M18 4H6v7a6 6 0 0 0 12 0V4Z"/><text x="10.5" y="11" fill="#d4af37" font-size="7" font-family="Arial" font-weight="bold" stroke-width="0">2</text></svg>`, 
+                challenge: "Termine todos os níveis da Prova 2" 
             },
             { 
                 id: "pr2", 
-                label: "Rei da Prova 2", 
-                icon: `<svg viewBox="0 0 24 24" fill="none" stroke="#3182ce" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55.45 1 1 1h2c.55 0 1-.45 1-1v-2.34"/><path d="M18 4H6v7a6 6 0 0 0 12 0V4Z"/><text x="10.5" y="11" fill="#3182ce" font-size="7" font-family="Arial" font-weight="bold" stroke-width="0">2</text></svg>`, 
-                challenge: "Termine todos os níveis da Prova 4" 
+                label: "Rei da Prova 3", 
+                icon: `<svg viewBox="0 0 24 24" fill="none" stroke="#3182ce" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55.45 1 1 1h2c.55 0 1-.45 1-1v-2.34"/><path d="M18 4H6v7a6 6 0 0 0 12 0V4Z"/><text x="10.5" y="11" fill="#3182ce" font-size="7" font-family="Arial" font-weight="bold" stroke-width="0">3</text></svg>`, 
+                challenge: "Termine todos os níveis da Prova 3" 
             }
         ];
 
@@ -198,7 +200,6 @@
             const u = new SpeechSynthesisUtterance(String(text).replace(/^\*/, ''));
             if (lang.startsWith('pt') && ptVoice) u.voice = ptVoice;
             u.lang = lang; 
-            // PT voice speed set to 1.20 for natural quickness (as requested)
             u.rate = lang.startsWith('pt') ? 1.20 : 0.85; 
             if (onEnd) u.onend = onEnd;
             window.speechSynthesis.speak(u);
@@ -211,11 +212,12 @@
             fb.classList.remove('opacity-0'); setTimeout(() => fb.classList.add('opacity-0'), duration);
         }
 
-        function checkP3MainCompletion() {
-            const themes = PROVAS_DATA["P3"].themes;
+        // Logic check for P2 completion (was P3)
+        function checkP2MainCompletion() {
+            const themes = PROVAS_DATA["P2"].themes;
             for (const k in themes) {
                 if (themes[k].some(i => i.en.startsWith('*'))) {
-                    const done = state.progress[`P3_${k}`] || [];
+                    const done = state.progress[`P2_${k}`] || [];
                     const needed = (k.includes("Sentences") || k.includes("Continuous")) ? 4 : 5;
                     const maxDone = done.length > 0 ? Math.max(...done) : 0;
                     if (maxDone < needed) return false;
@@ -294,8 +296,9 @@
                 return themes.every(t => checkThemeComplete(pKey, t));
             };
 
-            if (isProvaDone("P3")) earned.add("pr1");
-            if (isProvaDone("P4")) earned.add("pr2");
+            // Badge criteria updated: pr1 for P2, pr2 for P3
+            if (isProvaDone("P2")) earned.add("pr1");
+            if (isProvaDone("P3")) earned.add("pr2");
 
             return earned;
         }
@@ -557,7 +560,6 @@
             counterDiv.className = "bg-white text-gray-700 border-2 border-gray-200 px-3 rounded-full font-bold text-xs flex items-center justify-center gap-1 shrink-0 h-10";
             counterDiv.innerHTML = `<span>🎯</span><span>${state.totalQuestionsSolved}</span>`;
 
-            // ABC feature kept in code but hidden from UI as requested
             const cb = document.createElement('button');
             cb.className = `px-3 rounded-xl font-bold border-2 transition-all btn-bounce text-xs shrink-0 bg-blue-600 border-blue-700 text-white shadow-md h-10 hidden`;
             cb.innerText = state.caps ? "Abc" : "ABC";
@@ -566,14 +568,14 @@
             ha.append(bb, counterDiv, cb);
             container.appendChild(ha);
 
-            // Provas P3 and P4
+            // Provas P2 and P3 (renamed)
             Object.keys(PROVAS_DATA).forEach(p => {
-                const isP4 = (p === "P4"), isDone = !isP4 || checkP3MainCompletion();
+                const isP3 = (p === "P3"), isDone = !isP3 || checkP2MainCompletion();
                 const b = document.createElement('button'); b.className = `card p-4 text-xl font-bold mb-2 ${!isDone ? 'locked bg-gray-100' : 'bg-white border-b-4 border-blue-200'}`;
                 b.innerText = formatText("Prova " + p);
                 b.onclick = () => { 
                     if (!isDone) {
-                        const m = "Termine de estudar o vocabulário principal da P3 primeiro";
+                        const m = "Termine de estudar o vocabulário principal da P2 primeiro";
                         showFeedback(formatText(m), "#f56565", 5000); speak(m, "pt-BR");
                     } else { state.prova = p; setScreen('themes'); }
                 };
@@ -629,7 +631,6 @@
             container.innerHTML = ''; screenTitle.innerText = formatText(`Temas de ${state.prova}`);
             container.appendChild(createToggleUI(!state.onlyStar, () => { state.onlyStar = !state.onlyStar; localStorage.setItem('eq_star', state.onlyStar); renderThemes(); }));
             
-            // Themes with main terms first
             const currentOrder = PROVAS_DATA[state.prova].order;
             const sortedOrder = [...currentOrder].sort((a, b) => {
                 const hasStarA = PROVAS_DATA[state.prova].themes[a].some(i => i.en.startsWith('*'));
@@ -670,7 +671,6 @@
                 return b;
             };
             hr.append(btnH('en', "INGLÊS"), btnH('pt', "PORTUGUÊS")); container.appendChild(hr);
-            const table = document.className = "vocab-table w-full";
             const tableElement = document.createElement('table'); tableElement.className = "vocab-table w-full";
             const tbody = document.createElement('tbody');
             ws.forEach((w, i) => {
